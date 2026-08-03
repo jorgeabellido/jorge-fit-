@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-label="Cable Wood Chop illustration">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#18213a"/><stop offset="1" stop-color="#0b0f1c"/></linearGradient><linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop stop-color="hsl(362 88% 62%)"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+<rect width="640" height="420" rx="28" fill="url(#bg)"/><circle cx="535" cy="62" r="105" fill="hsl(362 85% 55% / .13)"/>
+<g stroke="#697594" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".9"><path d="M118 315h390"/><path d="M165 314V138h78"/><path d="M470 314V112"/><path d="M470 112h-72"/><path d="M205 210h76"/></g>
+<g stroke="url(#a)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="330" cy="118" r="30" fill="#d6b28c" stroke="none"/><path d="M330 154v96"/><path d="M330 174l-68 44"/><path d="M330 176l71-36"/><path d="M330 248l-48 67"/><path d="M330 248l52 68"/></g>
+<g fill="#f5f7ff"><text x="34" y="46" font-family="Arial,Helvetica,sans-serif" font-size="19" font-weight="700" letter-spacing="3">JORGEFIT EXERCISE GUIDE</text><text x="34" y="385" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800">Cable Wood Chop</text></g>
+</svg>
