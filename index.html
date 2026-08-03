@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="description" content="JorgeFit AI v5.2 — AI Muscle Coach — smart, joint-friendly workout planning and progress tracking." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JorgeFit AI" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icon-180.png" />
+  <link rel="icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="./styles.css?v=5.2.2" />
+  <title>JorgeFit AI v5.2 — AI Muscle Coach</title>
+</head>
+<body>
+  <div id="offlineBanner" class="offline-banner" hidden>You are offline. JorgeFit still works and will save locally.</div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="brand">JORGEFIT AI <span>v5.2</span></div>
+        <h1 id="greeting">Good morning, Jorge</h1>
+      </div>
+      <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙️</button>
+    </header>
+
+    <main>
+      <section class="view active" id="homeView">
+        <article class="hero-card premium-hero">
+          <div class="premium-banner"><img src="./jorgefit-premium-ai-preview.png" alt="JorgeFit premium AI workout interface"><div><span>PHASE 1 · BUILD 5.1</span><strong>Smart weight coaching + visual exercise guide</strong></div></div>
+          <div class="hero-top">
+            <span class="pill" id="todayLabel"></span>
+            <span class="readiness" id="readinessBadge">Ready 88%</span>
+          </div>
+          <h2 id="todayWorkoutName">Upper Body Power</h2>
+          <p id="todayWorkoutFocus">Chest · Back · Shoulders · Arms</p>
+          <div class="metric-row">
+            <div><strong id="exerciseCount">7</strong><span>Exercises</span></div>
+            <div><strong id="durationCount">60</strong><span>Minutes</span></div>
+            <div><strong id="calorieEstimate">480</strong><span>Est. cal</span></div>
+          </div>
+          <button class="primary-btn full" id="startWorkoutBtn">Start workout</button>
+          <button class="ghost-btn full" id="regenerateBtn">Generate another workout</button>
+        </article>
+
+        <section class="card">
+          <div class="section-title"><h3>AI coach</h3><span>Local smart plan</span></div>
+          <div class="coach-box" id="coachMessage"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-title"><h3>Muscle recovery</h3><span>Estimated</span></div>
+          <div class="recovery-grid" id="recoveryGrid"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-title"><h3>This week</h3><span id="weekRange"></span></div>
+          <div class="stats-grid">
+            <div><strong id="weekWorkouts">0</strong><span>Workouts</span></div>
+            <div><strong id="weekMinutes">0</strong><span>Minutes</span></div>
+            <div><strong id="weekVolume">0</strong><span>Volume lb</span></div>
+            <div><strong id="streakCount">0</strong><span>Day streak</span></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-title"><h3>Quick actions</h3></div>
+          <div class="quick-grid">
+            <button data-action="quick30">⚡ 30-minute plan</button>
+            <button data-action="cardio">🚶 Joint-friendly cardio</button>
+            <button data-action="mobility">🧘 Mobility routine</button>
+            <button data-action="install" id="installBtn">📲 Install app</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" id="planView">
+        <div class="page-heading"><div class="brand">SMART PLANNER</div><h2>Build your workout</h2></div>
+        <section class="card form-card">
+          <label>Training focus
+            <select id="focusSelect">
+              <option value="auto">AI choice based on recovery</option>
+              <option value="push">Chest, shoulders & triceps</option>
+              <option value="pull">Back & biceps</option>
+              <option value="legs">Joint-friendly legs</option>
+              <option value="upper">Upper body</option>
+              <option value="full">Full body</option>
+              <option value="cardio">Cardio + core</option>
+            </select>
+          </label>
+          <label>Available time
+            <select id="timeSelect"><option>30</option><option>45</option><option selected>60</option><option>75</option><option>90</option></select>
+          </label>
+          <label>Energy today
+            <input id="energyInput" type="range" min="1" max="10" value="7" />
+            <div class="range-label"><span>Low</span><strong id="energyValue">7/10</strong><span>High</span></div>
+          </label>
+          <label class="check-row"><input id="jointFriendlyInput" type="checkbox" checked /> Knee and lower-back-friendly substitutions</label>
+          <button class="primary-btn full" id="buildPlanBtn">Generate smart workout</button>
+        </section>
+        <section class="card" id="generatedPlanCard">
+          <div class="section-title"><h3 id="generatedTitle">Your plan</h3><span id="generatedMeta"></span></div>
+          <div id="generatedExerciseList" class="exercise-preview"></div>
+          <button class="primary-btn full" id="startGeneratedBtn">Start this workout</button>
+        </section>
+      </section>
+
+      <section class="view" id="workoutView">
+        <div class="workout-header">
+          <button class="icon-btn" id="exitWorkoutBtn">←</button>
+          <div><div class="brand">ACTIVE WORKOUT</div><h2 id="activeWorkoutTitle"></h2></div>
+          <div class="timer" id="workoutTimer">00:00</div>
+        </div>
+        <div class="progress-track"><div id="workoutProgress"></div></div>
+        <div id="activeExerciseList" class="active-exercises"></div>
+        <div class="sticky-actions">
+          <button class="ghost-btn" id="addExerciseBtn">+ Exercise</button>
+          <button class="primary-btn" id="finishWorkoutBtn">Finish</button>
+        </div>
+      </section>
+
+      <section class="view" id="progressView">
+        <div class="page-heading"><div class="brand">YOUR RESULTS</div><h2>Progress</h2></div>
+        <section class="card">
+          <div class="section-title"><h3>Body tracking</h3><span>Stored on this device</span></div>
+          <div class="two-col">
+            <label>Weight (lb)<input id="weightInput" type="number" step="0.1" placeholder="223.0" /></label>
+            <label>Body fat (%)<input id="bodyFatInput" type="number" step="0.1" placeholder="Use calculator below" /></label>
+          </div>
+          <button class="ghost-btn full calculator-btn" type="button" id="openBodyFatCalculatorBtn">📏 Estimate my body fat</button>
+          <div class="two-col">
+            <label>Waist (in)<input id="waistInput" type="number" step="0.1" /></label>
+            <label>Steps today<input id="stepsInput" type="number" step="1" /></label>
+          </div>
+          <button class="primary-btn full" id="saveMeasurementBtn">Save measurement</button>
+          <div id="measurementList" class="history-list"></div>
+        </section>
+        <section class="card">
+          <div class="section-title"><h3>Workout history</h3><button class="text-btn" id="clearHistoryBtn">Clear</button></div>
+          <div id="workoutHistory" class="history-list"></div>
+        </section>
+        <section class="card">
+          <div class="section-title"><h3>AI Coach insights</h3><span>Phase 2</span></div>
+          <div id="coachHistory" class="history-list"></div>
+        </section>
+        <section class="card">
+          <div class="section-title"><h3>Backup</h3><span>Move data to another phone</span></div>
+          <div class="two-col buttons">
+            <button class="ghost-btn" id="exportDataBtn">Export</button>
+            <label class="ghost-btn file-button">Import<input type="file" id="importDataInput" accept="application/json" hidden /></label>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="nav-btn active" data-view="homeView">🏠<span>Home</span></button>
+      <button class="nav-btn" data-view="planView">✨<span>Plan</span></button>
+      <button class="nav-btn" data-view="progressView">📈<span>Progress</span></button>
+    </nav>
+  </div>
+
+  <dialog id="setupDialog">
+    <form method="dialog" class="modal-card" id="setupForm">
+      <h2>Welcome to JorgeFit AI v5.2 — AI Muscle Coach</h2>
+      <p>Set your preferences once. You can change them later.</p>
+      <label>Name<input id="setupName" value="Jorge" /></label>
+      <div class="two-col">
+        <label>Age<input id="setupAge" type="number" value="48" /></label>
+        <label>Height<input id="setupHeight" value="5'9&quot;" /></label>
+      </div>
+      <label>Primary goal<select id="setupGoal"><option value="recomp">Lose fat + build muscle</option><option value="muscle">Build muscle</option><option value="strength">Strength</option><option value="fitness">General fitness</option></select></label>
+      <label>Gym<input id="setupGym" value="Crunch Fitness - Lake Nona" /></label>
+      <label>Days per week<select id="setupDays"><option>3</option><option>4</option><option>5</option><option selected>6</option></select></label>
+      <label class="check-row"><input id="setupJoint" type="checkbox" checked /> Use joint-friendly exercise choices</label>
+      <button class="primary-btn full" value="default" id="saveSetupBtn">Save and begin</button>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="modal-card" id="settingsForm">
+      <div class="modal-head"><h2>Settings</h2><button class="icon-btn" value="cancel">✕</button></div>
+      <label>Name<input id="settingsName" /></label>
+      <label>Gym<input id="settingsGym" /></label>
+      <label>Default workout time<select id="settingsDuration"><option>30</option><option>45</option><option>60</option><option>75</option><option>90</option></select></label>
+      <label>Training days<select id="settingsDays"><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+      <label class="check-row"><input id="settingsJoint" type="checkbox" /> Joint-friendly choices</label>
+      <button class="primary-btn full" value="default" id="saveSettingsBtn">Save settings</button>
+      <button class="danger-btn full" type="button" id="resetAppBtn">Reset all app data</button>
+    </form>
+  </dialog>
+
+
+  <dialog id="bodyFatDialog">
+    <div class="modal-card">
+      <div class="modal-head"><h2>Body-fat estimator</h2><button class="icon-btn" type="button" id="closeBodyFatCalculatorBtn">✕</button></div>
+      <p>Uses the U.S. Navy circumference method. It provides an estimate, not a medical measurement.</p>
+      <label>Sex used by the formula
+        <select id="bodyFatSex">
+          <option value="male" selected>Male</option>
+          <option value="female">Female</option>
+        </select>
+      </label>
+      <div class="two-col">
+        <label>Height — feet<input id="bodyFatFeet" type="number" min="3" max="8" value="5" inputmode="numeric" /></label>
+        <label>Height — inches<input id="bodyFatHeightInches" type="number" min="0" max="11.9" step="0.1" value="9" inputmode="decimal" /></label>
+      </div>
+      <div class="two-col">
+        <label>Neck (in)<input id="bodyFatNeck" type="number" min="8" step="0.1" placeholder="Measure below Adam’s apple" inputmode="decimal" /></label>
+        <label>Waist (in)<input id="bodyFatWaist" type="number" min="15" step="0.1" placeholder="At belly button" inputmode="decimal" /></label>
+      </div>
+      <label id="bodyFatHipRow" hidden>Hips (in)<input id="bodyFatHip" type="number" min="20" step="0.1" placeholder="Widest point" inputmode="decimal" /></label>
+      <div class="calculator-help">
+        <strong>How to measure</strong>
+        <span>Keep the tape level and snug without pulling it tight. Measure after a normal exhale.</span>
+      </div>
+      <button class="primary-btn full" type="button" id="calculateBodyFatBtn">Calculate estimate</button>
+      <div class="body-fat-result" id="bodyFatResult" hidden></div>
+      <button class="ghost-btn full" type="button" id="useBodyFatResultBtn" hidden>Use this result</button>
+    </div>
+  </dialog>
+
+
+  <dialog id="replacementDialog">
+    <div class="modal-card">
+      <div class="modal-head"><div><div class="brand">SMART SUBSTITUTE</div><h2 id="replacementOriginal">Replace exercise</h2></div><button class="icon-btn" id="closeReplacementBtn" aria-label="Close">×</button></div>
+      <p>Choose an exercise that trains the same primary muscle group.</p>
+      <div class="replacement-list" id="replacementList"></div>
+    </div>
+  </dialog>
+
+  <dialog id="exerciseInfoDialog" class="exercise-coach-dialog">
+    <div class="modal-card exercise-coach-card">
+      <div class="modal-head"><div><div class="brand">AI EXERCISE COACH</div><h2 id="exerciseInfoTitle">Exercise</h2></div><button class="icon-btn" id="closeExerciseInfoBtn" aria-label="Close">×</button></div>
+      <img class="guide-image coach-main-image" id="exerciseInfoImage" alt="">
+      <div class="coach-metrics">
+        <div><span>Last time</span><strong id="exerciseInfoLast">Not tracked</strong></div>
+        <div><span>Recommended</span><strong id="exerciseInfoRecommended">Start light</strong></div>
+      </div>
+      <div class="guide-section ai-reason"><strong>🤖 AI coach recommendation</strong><p id="exerciseInfoReason"></p></div>
+      <div class="guide-grid">
+        <div class="guide-section"><strong>Equipment</strong><p id="exerciseInfoEquipment"></p></div>
+        <div class="guide-section"><strong>Muscles worked</strong><p id="exerciseInfoMuscles"></p></div>
+      </div>
+      <div class="guide-section"><strong>How to perform it</strong><p id="exerciseInfoInstructions"></p></div>
+      <img class="guide-image guide-secondary" id="exerciseInfoStepsImage" alt="Exercise steps" hidden>
+      <div class="guide-section"><strong>⚠ Common mistakes</strong><p id="exerciseInfoMistakes"></p></div>
+      <img class="guide-image guide-secondary" id="exerciseInfoMistakesImage" alt="Common mistakes" hidden>
+      <div class="guide-section"><strong>Coach tip</strong><p id="exerciseInfoTip"></p></div>
+    </div>
+  </dialog>
+
+  <dialog id="workoutSummaryDialog">
+    <div class="modal-card">
+      <div class="brand">WORKOUT COMPLETE</div>
+      <h2>Great work, Jorge! 💪</h2>
+      <div class="summary-grid"><div><strong id="summaryVolume">0 lb</strong><span>Total volume</span></div><div><strong id="summarySets">0</strong><span>Completed sets</span></div></div>
+      <div class="coach-summary"><strong>🤖 Coach Jorge</strong><p id="summaryCoach"></p></div>
+      <button class="primary-btn full" id="closeWorkoutSummaryBtn">Done</button>
+    </div>
+  </dialog>
+
+  <dialog id="restDialog">
+    <div class="modal-card center-modal">
+      <div class="brand">REST TIMER</div>
+      <div class="rest-time" id="restTime">01:30</div>
+      <div class="two-col buttons"><button class="ghost-btn" id="minusRestBtn">−15 sec</button><button class="ghost-btn" id="plusRestBtn">+15 sec</button></div>
+      <button class="primary-btn full" id="skipRestBtn">Skip rest</button>
+    </div>
+  </dialog>
+
+  <dialog id="installDialog">
+    <div class="modal-card">
+      <h2>Install JorgeFit AI</h2>
+      <p id="installInstructions">On iPhone: tap Share in Safari, then “Add to Home Screen.”</p>
+      <button class="primary-btn full" id="closeInstallBtn">Got it</button>
+    </div>
+  </dialog>
+
+  <script src="./app.js?v=5.2.2"></script>
+</body>
+</html>

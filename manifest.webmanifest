@@ -1,0 +1,60 @@
+{
+  "id": "./",
+  "name": "JorgeFit AI v5.1",
+  "short_name": "JorgeFit v5.1",
+  "description": "Personal fitness coach with exercise guides, smart substitutions, body-fat tracking, and offline support.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#070a12",
+  "theme_color": "#0b1020",
+  "categories": [
+    "fitness",
+    "health",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start workout",
+      "short_name": "Workout",
+      "url": "./?action=workout",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Log progress",
+      "short_name": "Progress",
+      "url": "./?action=progress",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
